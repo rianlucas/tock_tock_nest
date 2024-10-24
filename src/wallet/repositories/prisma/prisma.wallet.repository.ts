@@ -21,6 +21,7 @@ export class PrismaWalletRepository implements WalletRepository {
     return this.prisma.wallet.findMany({
       include: {
         user: true,
+        Asset: true,
       },
     });
   }
