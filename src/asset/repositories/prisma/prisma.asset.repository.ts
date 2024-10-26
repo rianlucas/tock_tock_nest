@@ -28,7 +28,18 @@ export class PrismaAssetRepository implements AssetRepository {
 
   async create(assetDto: CreateAssetDto): Promise<Asset> {
     return this.prisma.asset.create({
-      data: assetDto,
+      data: {
+        name: assetDto.name,
+        ticket: assetDto.ticket,
+        price: assetDto.price,
+        wallet: {
+          connect: [
+            {
+              id: assetDto.walletId,
+            },
+          ],
+        },
+      },
     });
   }
 
