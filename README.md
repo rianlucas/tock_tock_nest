@@ -32,6 +32,18 @@
 $ npm install
 ```
 
+```bash
+$ npx prisma generate
+```
+
+```bash
+$ cp .env.example .env
+```
+
+```bash
+$ docker compose up -d
+```
+
 ## Compile and run the project
 
 ```bash
