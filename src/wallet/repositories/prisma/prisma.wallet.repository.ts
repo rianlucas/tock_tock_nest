@@ -4,18 +4,28 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateWalletDto } from '../../dto/create-wallet.dto';
 import { UpdateWalletDto } from '../../dto/update-wallet.dto';
+import { NotFoundError } from '@/src/global/errors/not-found.error';
 
 @Injectable()
 export class PrismaWalletRepository implements WalletRepository {
   constructor(private prisma: PrismaService) {}
 
   async findOne(id: string): Promise<Wallet | null> {
-    return this.prisma.wallet.findFirstOrThrow({
+    const wallet = await this.prisma.wallet.findFirst({
       where: { id },
       include: {
         user: true,
       },
     });
+
+    if (!wallet) {
+      throw new NotFoundError({
+        message: 'Wallet not found',
+        action: 'Check if the walletId is correct',
+      });
+    }
+
+    return wallet;
   }
   async findMany(): Promise<Wallet[]> {
     return this.prisma.wallet.findMany({
