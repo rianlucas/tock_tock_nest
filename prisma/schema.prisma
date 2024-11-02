@@ -58,8 +58,8 @@ model Transaction {
   updatedAt DateTime @updatedAt
   walletId  String
   wallet    Wallet   @relation(fields: [walletId], references: [id])
-  AssetId   String
-  asset     Asset    @relation(fields: [AssetId], references: [id])
+  assetId   String
+  asset     Asset    @relation(fields: [assetId], references: [id])
 }
 
 model WalletAssetSummaries {
