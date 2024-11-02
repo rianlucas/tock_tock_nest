@@ -16,7 +16,6 @@ export class NotFoundError extends BaseError {
       action: this.action,
       status_code: this.statusCode,
       error_id: this.errorId,
-      stack: this.stack,
     };
   }
 }
