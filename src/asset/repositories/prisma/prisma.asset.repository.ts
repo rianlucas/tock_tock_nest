@@ -4,18 +4,28 @@ import { Asset } from '@prisma/client';
 import { AssetRepository } from '../asset.repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
+import { NotFoundError } from '@/src/global/errors/not-found.error';
 
 @Injectable()
 export class PrismaAssetRepository implements AssetRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findOne(id: string): Promise<Asset | null> {
-    return this.prisma.asset.findUnique({
+    const asset = await this.prisma.asset.findUnique({
       where: { id },
       include: {
         wallet: true,
       },
     });
+
+    if (!asset) {
+      throw new NotFoundError({
+        message: 'Asset not found',
+        action: 'Check if the assetId is correct',
+      });
+    }
+
+    return asset;
   }
 
   async findMany(): Promise<Asset[]> {

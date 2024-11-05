@@ -4,13 +4,23 @@ import { UpdateTransactionDto } from '../../dto/update-transaction.dto';
 import { TransactionRepository } from '../transaction.repository';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { NotFoundError } from '@/src/global/errors/not-found.error';
 
 @Injectable()
 export class PrismaTransactionRepository implements TransactionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findOne(id: string): Promise<Transaction | null> {
-    return this.prisma.transaction.findFirst({ where: { id } });
+    const transaction = this.prisma.transaction.findFirst({ where: { id } });
+
+    if (!transaction) {
+      throw new NotFoundError({
+        message: 'Transaction not found',
+        action: 'Check if the transactionId is correct',
+      });
+    }
+
+    return transaction;
   }
 
   async findMany(): Promise<Transaction[]> {
