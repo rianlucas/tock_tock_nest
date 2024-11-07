@@ -16,7 +16,6 @@ export class WalletSummariesService {
   ): Promise<WalletAssetSummaries> {
     if (transaction.type === 'sell') {
       walletSummaries.totalInvestiment -=
-        // 105.68 - 26.42 * 4
         transaction.amount * transaction.quantity;
       walletSummaries.assetCount -= transaction.quantity;
     }
@@ -34,9 +33,7 @@ export class WalletSummariesService {
 
   async update(transaction: CreateTransactionDto) {
     const walletSummaries =
-      await this.walletSummariesRepository.findWalletSummariesByTransaction(
-        transaction,
-      );
+      await this.walletSummariesRepository.findByTransaction(transaction);
 
     const updatedWalletSummaries = await this.calculateAverageAssetPrice(
       walletSummaries,

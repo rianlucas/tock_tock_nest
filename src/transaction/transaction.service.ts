@@ -5,6 +5,9 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { TransactionRepository } from './repositories/transaction.repository';
 import { WalletSummariesService } from '../wallet-summaries/wallet-summaries.service';
+import { PrismaService } from '@/prisma/prisma.service';
+import { WalletSummariesRepository } from '../wallet-summaries/repositories/wallet-summaries.repository';
+import { UnprocessableEntityError } from '../global/errors/unprocessable-entity.error';
 
 @Injectable()
 export class TransactionService {
@@ -15,8 +18,11 @@ export class TransactionService {
     private readonly walletRepository: WalletRepository,
     @Inject('AssetRepository')
     private readonly assetRepository: AssetRepository,
+    @Inject('WalletSummariesRepository')
+    private readonly walletSummariesRepository: WalletSummariesRepository,
     @Inject('WalletSummariesService')
     private readonly walletSummariesService: WalletSummariesService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async checkIfWalletAndAssetExist(
@@ -27,16 +33,40 @@ export class TransactionService {
     await this.assetRepository.findOne(assetId);
   }
 
+  async checkIfUserCanSell(transaction: CreateTransactionDto): Promise<void> {
+    const walletAssetSummaries =
+      await this.walletSummariesRepository.findByAssetAndWalletId(
+        transaction.walletId,
+        transaction.assetId,
+      );
+
+    if (
+      walletAssetSummaries.assetCount < transaction.quantity &&
+      transaction.type === 'sell'
+    ) {
+      throw new UnprocessableEntityError({
+        message:
+          'Insufficient asset quantity, you can not sell more assets than you have',
+        action: 'Check if the asset quantity is correct',
+      });
+    }
+  }
+
   async create(createTransactionDto: CreateTransactionDto) {
     await this.checkIfWalletAndAssetExist(
       createTransactionDto.walletId,
       createTransactionDto.assetId,
     );
 
-    const transaction =
-      await this.transactionRepository.create(createTransactionDto);
+    await this.checkIfUserCanSell(createTransactionDto);
 
-    await this.walletSummariesService.update(createTransactionDto);
+    const transaction = await this.prisma.$transaction(async () => {
+      const transaction =
+        await this.transactionRepository.create(createTransactionDto);
+
+      await this.walletSummariesService.update(createTransactionDto);
+      return transaction;
+    });
 
     return transaction;
   }
