@@ -5,6 +5,8 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { PrismaTransactionRepository } from './repositories/prisma/prisma.transaction.repository';
 import { PrismaWalletRepository } from '../wallet/repositories/prisma/prisma.wallet.repository';
 import { PrismaAssetRepository } from '../asset/repositories/prisma/prisma.asset.repository';
+import { WalletSummariesService } from '../wallet-summaries/wallet-summaries.service';
+import { PrismaWalletSummariesRepository } from '../wallet-summaries/repositories/prisma/prisma.wallet-summaries.repository';
 
 @Module({
   controllers: [TransactionController],
@@ -21,6 +23,14 @@ import { PrismaAssetRepository } from '../asset/repositories/prisma/prisma.asset
     {
       provide: 'AssetRepository',
       useClass: PrismaAssetRepository,
+    },
+    {
+      provide: 'WalletSummariesRepository',
+      useClass: PrismaWalletSummariesRepository,
+    },
+    {
+      provide: 'WalletSummariesService',
+      useClass: WalletSummariesService,
     },
     PrismaService,
   ],

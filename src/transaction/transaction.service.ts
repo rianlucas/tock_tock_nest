@@ -4,6 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { TransactionRepository } from './repositories/transaction.repository';
+import { WalletSummariesService } from '../wallet-summaries/wallet-summaries.service';
 
 @Injectable()
 export class TransactionService {
@@ -14,6 +15,8 @@ export class TransactionService {
     private readonly walletRepository: WalletRepository,
     @Inject('AssetRepository')
     private readonly assetRepository: AssetRepository,
+    @Inject('WalletSummariesService')
+    private readonly walletSummariesService: WalletSummariesService,
   ) {}
 
   async checkIfWalletAndAssetExist(
@@ -30,7 +33,12 @@ export class TransactionService {
       createTransactionDto.assetId,
     );
 
-    return this.transactionRepository.create(createTransactionDto);
+    const transaction =
+      await this.transactionRepository.create(createTransactionDto);
+
+    await this.walletSummariesService.update(createTransactionDto);
+
+    return transaction;
   }
 
   async findAll() {
