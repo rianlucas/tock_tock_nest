@@ -2,8 +2,13 @@ import { WalletAssetSummaries } from '@prisma/client';
 import { CreateTransactionDto } from './../../transaction/dto/create-transaction.dto';
 import { UpdateWalletSummariesDto } from '../dto/update-walllet-summaries.dto';
 export interface WalletSummariesRepository {
-  findWalletSummariesByTransaction(
+  findByTransaction(
     transaction: CreateTransactionDto,
+  ): Promise<WalletAssetSummaries>;
+
+  findByAssetAndWalletId(
+    walletId: string,
+    assetId: string,
   ): Promise<WalletAssetSummaries>;
 
   update(

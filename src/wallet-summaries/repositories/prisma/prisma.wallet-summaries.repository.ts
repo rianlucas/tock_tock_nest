@@ -12,7 +12,7 @@ export class PrismaWalletSummariesRepository
 {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findWalletSummariesByTransaction(
+  async findByTransaction(
     transaction: CreateTransactionDto,
   ): Promise<WalletAssetSummaries> {
     const wallletAssetSummaries =
@@ -28,6 +28,15 @@ export class PrismaWalletSummariesRepository
     }
 
     return wallletAssetSummaries;
+  }
+
+  async findByAssetAndWalletId(
+    walletId: string,
+    assetId: string,
+  ): Promise<WalletAssetSummaries> {
+    return this.prisma.walletAssetSummaries.findFirstOrThrow({
+      where: { walletId, assetId },
+    });
   }
 
   async update(
