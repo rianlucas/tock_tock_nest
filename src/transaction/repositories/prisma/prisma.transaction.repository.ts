@@ -32,6 +32,7 @@ export class PrismaTransactionRepository implements TransactionRepository {
       data: {
         amount: wallet.amount,
         type: wallet.type,
+        quantity: wallet.quantity,
         asset: { connect: { id: wallet.assetId } },
         wallet: { connect: { id: wallet.walletId } },
       },
