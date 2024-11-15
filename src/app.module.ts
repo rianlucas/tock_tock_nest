@@ -8,9 +8,16 @@ import { TransactionModule } from './transaction/transaction.module';
 import { WalletSummariesService } from './wallet-summaries/wallet-summaries.service';
 import { PrismaWalletSummariesRepository } from './wallet-summaries/repositories/prisma/prisma.wallet-summaries.repository';
 import { PrismaService } from '@/prisma/prisma.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UserModule, WalletModule, AssetModule, TransactionModule],
+  imports: [
+    UserModule,
+    WalletModule,
+    AssetModule,
+    TransactionModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
