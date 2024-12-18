@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  api:
+    image: node-api:v5
+    container_name: node-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+
   postgres:
     image: postgres:latest
     container_name: postgres
@@ -9,6 +18,8 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: tock_tock
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - ./docker/data:/var/lib/postgresql/data
+    depends_on:
+      - api
