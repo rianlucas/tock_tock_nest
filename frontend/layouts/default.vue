@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div class="bg-foreground">
     <div>
       <NavBar/>
     </div>
-    <NuxtPage/>
+    <div class="max-w-screen-lg justify-center h-screen mx-auto pt-6">
+      <NuxtPage/>
+    </div>
   </div>
 </template>
 
