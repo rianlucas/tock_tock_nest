@@ -1,7 +1,7 @@
 <template>
   <div class="pt-4 flex justify-between">
     <Card 
-      class="max-w-[350px] min-w-[300px] bg-foreground border-[#3D4A52] text-white"
+      class="max-w-[350px] min-w-[300px] bg-background border-[#3D4A52] text-primary"
       v-for="(data, index) in cards"
       :key="index"
     >
@@ -9,7 +9,7 @@
         <p class="text-lg">{{ data.title }}</p>
       </CardHeader>
       <CardContent>
-        <CardTitle class="font-bold text-white">
+        <CardTitle class="font-bold text-primary">
           {{ data.title === 'PL' && data.value > 0 ? `${data.value}%` : `R$ ${data.value}` }}   
         </CardTitle>
         <CardDescription 

@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   devServer: { port: 3001 },
   modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt', '@nuxtjs/color-mode'],
+  colorMode: {
+    classSuffix: '',
+  },
   shadcn: {
     /**
      * Prefix for all the imported component
