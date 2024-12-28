@@ -40,6 +40,12 @@
         </NuxtLink>
       </Button>
 
+      <Button variant="primary" class="mr-4">
+        <NuxtLink class="text-primary/70" to="/transactions">
+          Transactions
+        </NuxtLink>
+      </Button>
+
       <Menubar class=" border-0">
         <MenubarMenu>
           <MenubarTrigger>
@@ -90,6 +96,7 @@ const colorMode = useColorMode()
 
 .router-link-exact-active {
   color: hsl(var(--primary));
+  font-weight: bold;
 }
 
 </style>
