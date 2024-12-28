@@ -8,7 +8,34 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import PageTitle from '~/components/ui/page-title/PageTitle.vue';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { cn } from '@/lib/utils';
+import {
+  DateFormatter,
+  type DateValue,
+  getLocalTimeZone,
+} from '@internationalized/date'
+import { Calendar as CalendarIcon } from 'lucide-vue-next'
+import { Calendar } from '@/components/ui/calendar';
+import { ref } from 'vue'
+
+const df = new DateFormatter('en-US', {
+  dateStyle: 'long',
+})
+
+const value = ref<DateValue>()
 
 const wallet = [
   {
@@ -26,12 +53,69 @@ const wallet = [
   <div>
     <div class="flex justify-between items-center">
       <PageTitle title="Wallet"/>
-      <!-- TODO: create modal to add a new position -->
-      <Button variant="outline">
-        Add a position
-      </Button>
-    </div>
-
+      <Dialog>
+        <DialogTrigger as-child>
+          <Button variant="outline">
+            Add a position
+          </Button>
+        </DialogTrigger>
+        <DialogContent class="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Add a position</DialogTitle>
+            <DialogDescription>
+              Add a new asset here. Click save when you're done. 
+            </DialogDescription>
+          </DialogHeader>
+          <div class="grid gap-4 py-4">
+            <div class="grid grid-cols-4 items-center gap-4">
+              <Label for="ticket" class="text-right">
+                Ticket
+              </Label>
+              <Input id="ticket" default-value="BBAS3" class="col-span-3" />
+            </div>
+            <div class="grid grid-cols-4 items-center gap-4">
+              <Label for="quantity" class="text-right">
+                Quantity
+              </Label>
+              <Input id="quantity" default-value="32" class="col-span-3" />
+            </div>
+            <div class="grid grid-cols-4 items-center gap-4">
+              <Label for="username" class="text-right">
+                Unit Price
+              </Label>
+              <Input id="username" default-value="26,76" class="col-span-3" />
+            </div>
+            <div class="grid grid-cols-4 items-center gap-4">
+              <Label for="username" class="text-right">
+                Date
+              </Label>
+              <Popover>
+                <PopoverTrigger as-child>
+                  <Button
+                    variant="outline"
+                    :class="cn(
+                      'w-[280px] justify-start text-left font-normal',
+                      !value && 'text-muted-foreground',
+                    )"
+                  >
+                    <CalendarIcon class="mr-2 h-4 w-4" />
+                    {{ value ? df.format(value.toDate(getLocalTimeZone())) : "Pick a date" }}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent class="w-auto p-0">
+                  <Calendar v-model="value" initial-focus />
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="submit">
+              Save changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>    
 
     <Table class="pt-4">
       <TableCaption>A list of your assets.</TableCaption>
