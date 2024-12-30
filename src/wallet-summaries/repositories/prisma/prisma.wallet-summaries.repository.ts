@@ -51,7 +51,7 @@ export class PrismaWalletSummariesRepository
           ? 0
           : walletAssetSummaries.averagePrice,
         assetCount: walletAssetSummaries.assetCount ?? 0,
-        totalInvestiment: walletAssetSummaries.totalInvestiment ?? 0,
+        totalInvested: walletAssetSummaries.totalInvested ?? 0,
         createdAt: new Date('2024-11-06T01:47:39.085Z'),
         updatedAt: new Date(),
 

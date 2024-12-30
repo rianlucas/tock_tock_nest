@@ -39,7 +39,8 @@ export class PrismaWalletRepository implements WalletRepository {
     return this.prisma.wallet.create({
       data: {
         name: wallet.name,
-        balance: 0,
+        totalInvested: 0,
+        grossBalance: 0,
         user: {
           connect: {
             id: wallet.userId,
@@ -56,7 +57,8 @@ export class PrismaWalletRepository implements WalletRepository {
       where: { id },
       data: {
         name: wallet.name,
-        balance: wallet.balance,
+        totalInvested: wallet.totalInvested,
+        grossBalance: wallet.grossBalance,
         user: {
           connect: {
             id: wallet.userId,
