@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 export const updateWalletSummariesSchema = z.object({
-  totalInvestiment: z.number(),
+  totalInvested: z.number(),
+  grossBalance: z.number(),
   assetCount: z.number(),
   averagePrice: z.number(),
   assetId: z.string().uuid(),

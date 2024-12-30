@@ -15,18 +15,18 @@ export class WalletSummariesService {
     transaction: CreateTransactionDto,
   ): Promise<WalletAssetSummaries> {
     if (transaction.type === 'sell') {
-      walletSummaries.totalInvestiment -=
+      walletSummaries.totalInvested -=
         transaction.amount * transaction.quantity;
       walletSummaries.assetCount -= transaction.quantity;
     }
     if (transaction.type === 'buy') {
-      walletSummaries.totalInvestiment +=
+      walletSummaries.totalInvested +=
         transaction.amount * transaction.quantity;
       walletSummaries.assetCount += transaction.quantity;
     }
 
     walletSummaries.averagePrice =
-      walletSummaries.totalInvestiment / walletSummaries.assetCount;
+      walletSummaries.totalInvested / walletSummaries.assetCount;
 
     return walletSummaries;
   }
