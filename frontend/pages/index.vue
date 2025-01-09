@@ -16,6 +16,9 @@
             <BarChart
               :data="data"
               index="name"
+              :show-grid-line="false"
+              :rounded-corners="3"
+              type="grounded"
               :categories="['patrimônio', 'investido']"
               :y-formatter="(tick, i) => {
                 return typeof tick === 'number'
