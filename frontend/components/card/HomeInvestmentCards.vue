@@ -2,7 +2,7 @@
   <div class="flex flex-1 flex-col gap-4 pt-0">
     <div class="grid gap-4 auto-rows-min md:grid-cols-3">
       <Card 
-        class="flex-1 bg-background border-[#3D4A52] text-primary"
+        class="flex-1 bg-background border-border text-primary"
         v-for="(data, index) in cards"
         :key="index"
       >

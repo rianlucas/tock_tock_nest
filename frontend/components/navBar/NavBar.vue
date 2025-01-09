@@ -147,10 +147,10 @@ const data = {
 
 <template>
   <SidebarProvider>
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="offcanvas">
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem >
             <NuxtLink to="/">
               <div class="ml-2 flex items-center gap-2">
                 <Wallet class="text-2xl" />
@@ -285,7 +285,7 @@ const data = {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-    <SidebarInset class="max-w-screen-lg mx-auto pt-6 2xl:max-w-screen-2xl transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+    <SidebarInset class="mx-auto pt-6 max-w-screen-2xl transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
       
       <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
         <div class="flex items-center gap-2 px-4">

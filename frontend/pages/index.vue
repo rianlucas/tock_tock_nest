@@ -6,7 +6,7 @@
         :cards="investmentCardsMock"
       />
 
-      <Card class="grid md:grid-cols-2 mt-10 border bg-background border-[#3D4A52]">
+      <Card class="grid md:grid-cols-2 mt-10 border bg-background border-border">
 
         <div>
           <CardHeader>
