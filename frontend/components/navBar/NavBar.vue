@@ -1,102 +1,315 @@
-<template>
-  <header class="bg-background text-primary p-4 flex justify-between items-center px-8 border-b-2 border-b-primary">
-    <h1 class="text-xl font-bold">
-      tock_tock
-    </h1>
-    
-    <div class="flex items-center">
-      <div class="mr-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger as-child>
-            <Button variant="outline">
-              <Icon icon="radix-icons:moon" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Icon icon="radix-icons:sun" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span class="sr-only">Toggle theme</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem @click="colorMode.preference = 'light'">
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem @click="colorMode.preference = 'dark'">
-              Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem @click="colorMode.preference = 'system'">
-              System
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-
-      <Button variant="primary" class="mr-4">
-        <NuxtLink class="text-primary/70" to="/">
-          Home
-        </NuxtLink>
-      </Button>
-      
-      <Button variant="primary" class="mr-4">
-        <NuxtLink class="text-primary/70" to="/portfolio">
-          Portfolio
-        </NuxtLink>
-      </Button>
-
-      <Button variant="primary" class="mr-4">
-        <NuxtLink class="text-primary/70" to="/transactions">
-          Transactions
-        </NuxtLink>
-      </Button>
-
-      <Menubar class=" border-0">
-        <MenubarMenu>
-          <MenubarTrigger>
-            <Avatar class="cursor-pointer">
-              <AvatarImage src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Ffe%2F8b%2F2f%2Ffe8b2fe91d946912c937b8dc1456ed30.jpg&f=1&nofb=1&ipt=c11f4398bf4a12ce24d7e9bad02602e517600fd9ebfdd70a15b8b8956fd285a4&ipo=images"/>
-              <AvatarFallback> Avatar</AvatarFallback>
-            </Avatar>
-          </MenubarTrigger>
-          <MenubarContent>
-            <MenubarItem>Profile</MenubarItem>
-            <MenubarItem>Upgrade Plan</MenubarItem>
-            <MenubarSeparator />
-            <MenubarItem>Logout</MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-      </Menubar>
-      
-    </div>
-  </header>
-</template>
-
-<script setup="ts">
-import AvatarFallback from '~/components/ui/avatar/AvatarFallback.vue';
+<script setup lang=ts>
 import {
-  Menubar,
-  MenubarCheckboxItem,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarRadioGroup,
-  MenubarRadioItem,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-  MenubarTrigger,
-} from '@/components/ui/menubar'
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Icon } from '@iconify/vue'
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/components/ui/avatar'
 
-const colorMode = useColorMode()
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Separator } from '@/components/ui/separator'
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
+import {
+  BadgeCheck,
+  Bell,
+  ChartNoAxesCombined,
+  ChevronRight,
+  ChevronsUpDown,
+  CreditCard,
+  ArrowLeftRight,
+  Landmark,
+  LogOut,
+  Sparkles,
+  Wallet,
+  BriefcaseBusiness,
+  Goal,
+  Newspaper
+} from 'lucide-vue-next'
+import { ref } from 'vue'
+
+// This is sample data.
+const data = {
+  user: {
+    name: 'shadcn',
+    email: 'm@example.com',
+    avatar: '/avatars/shadcn.jpg',
+  },
+  navMain: [
+    {
+      title: 'Patrimônio',
+      url: '/',
+      icon: Landmark,
+      isActive: true,
+      items: [
+        {
+          title: 'Ações',
+          url: '#',
+        },
+        {
+          title: 'FII',
+          url: '#',
+        },
+        {
+          title: 'Cripto',
+          url: '#',
+        },
+      ],
+    },
+    {
+      title: 'Gráficos',
+      url: '#',
+      icon: ChartNoAxesCombined,
+      isActive: true,
+      items: [
+        {
+          title: 'Evolução de Patrimônio',
+          url: '#',
+        },
+        {
+          title: 'Evolução de Dividendos',
+          url: '#',
+        },
+        {
+          title: 'Histórico de Dividendos',
+          url: '#',
+        },
+        {
+          title: 'Performance por Ativo',
+          url: '#',
+        },
+      ]
+    }
+  ],
+  projects: [
+    {
+      name: 'Transações',
+      url: '/transactions',
+      icon: ArrowLeftRight,
+    },
+    {
+      name: 'Portfólio',
+      url: '/portfolio',
+      icon: BriefcaseBusiness,
+    },
+    {
+      name: 'Metas e Objetivos',
+      url: '#',
+      icon: Goal,
+    },
+    {
+      name: 'Notícias',
+      url: '#',
+      icon: Newspaper,
+    },
+  ],
+}
 </script>
 
-<style >
-
-.router-link-exact-active {
-  color: hsl(var(--primary));
-  font-weight: bold;
-}
-
-</style>
+<template>
+  <SidebarProvider>
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <NuxtLink to="/">
+              <div class="ml-2 flex items-center gap-2">
+                <Wallet class="text-2xl" />
+                <h1 class="text-2xl font-bold ">
+                  tock_tock
+                </h1>
+              </div>
+            </NuxtLink>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel class="text-primary/70">Dashboard</SidebarGroupLabel>
+          <SidebarMenu>
+            <Collapsible
+              v-for="item in data.navMain"
+              :key="item.title"
+              as-child
+              :default-open="item.isActive"
+              class="group/collapsible"
+            >
+              <SidebarMenuItem>
+                <CollapsibleTrigger as-child>
+                  <SidebarMenuButton :tooltip="item.title">
+                    <component :is="item.icon" />
+                    <span>{{ item.title }}</span>
+                    <ChevronRight class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SidebarMenuSubItem
+                      v-for="subItem in item.items"
+                      :key="subItem.title"
+                    >
+                      <SidebarMenuSubButton as-child>
+                        <a :href="subItem.url">
+                          <span>{{ subItem.title }}</span>
+                        </a>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+          </SidebarMenu>
+          <SidebarGroupLabel class="mt-4 text-primary/70">Core</SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarMenuItem
+              v-for="item in data.projects"
+              :key="item.name"
+            >
+              <SidebarMenuButton as-child>
+                <a :href="item.url">
+                  <component :is="item.icon" />
+                  <span>{{ item.name }}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <SidebarMenuButton
+                  size="lg"
+                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
+                  <Avatar class="h-8 w-8 rounded-lg">
+                    <AvatarImage :src="data.user.avatar" :alt="data.user.name" />
+                    <AvatarFallback class="rounded-lg">
+                      CN
+                    </AvatarFallback>
+                  </Avatar>
+                  <div class="grid flex-1 text-left text-sm leading-tight">
+                    <span class="truncate font-semibold">{{ data.user.name }}</span>
+                    <span class="truncate text-xs">{{ data.user.email }}</span>
+                  </div>
+                  <ChevronsUpDown class="ml-auto size-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent class="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg" side="bottom" align="end" :side-offset="4">
+                <DropdownMenuLabel class="p-0 font-normal">
+                  <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <Avatar class="h-8 w-8 rounded-lg">
+                      <AvatarImage :src="data.user.avatar" :alt="data.user.name" />
+                      <AvatarFallback class="rounded-lg">
+                        CN
+                      </AvatarFallback>
+                    </Avatar>
+                    <div class="grid flex-1 text-left text-sm leading-tight">
+                      <span class="truncate font-semibold">{{ data.user.name }}</span>
+                      <span class="truncate text-xs">{{ data.user.email }}</span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <Sparkles />
+                    Upgrade to Pro
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <BadgeCheck />
+                    Account
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <CreditCard />
+                    Billing
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Bell />
+                    Notifications
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+      <SidebarRail />
+    </Sidebar>
+    <SidebarInset class="max-w-screen-lg mx-auto pt-6 2xl:max-w-screen-2xl transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+      
+      <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <div class="flex items-center gap-2 px-4">
+          <SidebarTrigger class="-ml-1" />
+          <Separator orientation="vertical" class="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem class="hidden md:block">
+                <BreadcrumbLink href="#">
+                  Building Your Application
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator class="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </header>
+      
+      <div class="gap-2 px-4 min-w-0">
+        <slot/>
+      </div>
+    </SidebarInset>
+  </SidebarProvider>
+</template>

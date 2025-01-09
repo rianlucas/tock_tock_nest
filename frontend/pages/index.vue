@@ -1,24 +1,36 @@
 <template>
-  <div class="justify-center">
+  <div class=" min-w-0">
 
       <PageTitle title="Portfolio"/>
       <HomeInvestmentCards
         :cards="investmentCardsMock"
       />
 
-      <Card class=" mt-10 border bg-background border-[#3D4A52]">
-        <CardHeader>
-          <h1 class="text-primary text-xl">Portfolio value over time</h1>
-        </CardHeader>
-        <AreaChart 
-          class="max-h-[300px] py-10"
-          :colors="['hsl(var(--primary))']"
-          curve-type="natural"
-          :show-grid-line="false"
-          :show-legend="false"
-          :show-x-axis="true"
-          :show-y-axis="false"
-          :data="data" index="name" :categories="['total']" />
+      <Card class="grid md:grid-cols-2 mt-10 border bg-background border-[#3D4A52]">
+
+        <div>
+          <CardHeader>
+            <h1 class="text-primary font-sans text-xl font-bold">Valor investido x patrimônio</h1>
+          </CardHeader>
+          <CardContent>
+            <BarChart
+              :data="data"
+              index="name"
+              :categories="['patrimônio', 'investido']"
+              :y-formatter="(tick, i) => {
+                return typeof tick === 'number'
+                  ? `R$ ${new Intl.NumberFormat('us').format(tick).toString()}`
+                  : ''
+              }"
+            />
+          </CardContent>
+        </div>
+
+        <div>
+          <h1>Tabela/Gráfico com as maiores posições da carteira</h1>
+        </div>
+
+
       </Card>
     </div>
     
@@ -34,18 +46,20 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import BarChart from '@/components/ui/chart-bar/BarChart.vue';
+
 import { Home } from 'lucide-vue-next';
 import HomeInvestmentCards from '~/components/card/HomeInvestmentCards.vue';
 import PageTitle from '~/components/ui/page-title/PageTitle.vue';
 import { investmentCardsMock } from '~/mocks/investments-cards';
 
 const data = [
-  { name: 'Jan', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Feb', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Mar', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Apr', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'May', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Jun', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Jul', total: Math.floor(Math.random() * 2000) + 500},
+  { name: 'Jan', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Feb', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Mar', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Apr', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'May', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Jun', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Jul', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
 ]
 </script>

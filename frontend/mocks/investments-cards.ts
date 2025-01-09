@@ -1,11 +1,11 @@
 export const investmentCardsMock = [
   {
-    title: 'invested',
+    title: 'Investido',
     value: 1000,
     variation: 2,
   },
   {
-    title: 'Now',
+    title: 'Atual',
     value: 1200,
     variation: 200,
   },
