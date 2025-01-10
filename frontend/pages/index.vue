@@ -6,37 +6,33 @@
         :cards="investmentCardsMock"
       />
 
-      <Card class="grid md:grid-cols-2 mt-10 border bg-background border-border">
-
-        <div>
-          <CardHeader>
-            <h1 class="text-primary font-sans text-xl font-bold">Valor investido x patrimônio</h1>
-          </CardHeader>
-          <CardContent>
-            <BarChart
-              :data="data"
-              index="name"
-              :show-grid-line="false"
-              :rounded-corners="3"
-              type="grounded"
-              :categories="['patrimônio', 'investido']"
-              :y-formatter="(tick, i) => {
-                return typeof tick === 'number'
-                  ? `R$ ${new Intl.NumberFormat('us').format(tick).toString()}`
-                  : ''
-              }"
-            />
-          </CardContent>
-        </div>
-
-        <div>
-          <h1>Tabela/Gráfico com as maiores posições da carteira</h1>
-        </div>
-
-
-      </Card>
+      <div class="grid md:grid-cols-[70%_30%] gap-4 mt-10 bg-background pr-4">
+        <Card v-for="card in cards" :key="card.component">
+  
+          <div>
+            <CardHeader>
+              <h1 class="text-primary font-sans text-xl font-bold">{{ card.title }}</h1>
+            </CardHeader>
+            <CardContent>
+              <component
+                :data="data"
+                index="name"
+                :show-grid-line="false"
+                :rounded-corners="3"
+                type="grounded"
+                :categories="['patrimônio', 'investido']"
+                :y-formatter="(tick, i) => {
+                  return typeof tick === 'number'
+                    ? `R$ ${new Intl.NumberFormat('us').format(tick).toString()}`
+                    : ''
+                }"
+                :is="card.component"
+              />
+            </CardContent>
+          </div>
+        </Card>
+      </div>
     </div>
-    
     
 </template>
 
@@ -55,6 +51,17 @@ import { Home } from 'lucide-vue-next';
 import HomeInvestmentCards from '~/components/card/HomeInvestmentCards.vue';
 import PageTitle from '~/components/ui/page-title/PageTitle.vue';
 import { investmentCardsMock } from '~/mocks/investments-cards';
+
+const cards = [
+  {
+    "title": "Valor investido x patrimônio",
+    "component": BarChart,
+  },
+  {
+    "title": "Tabela/Gráfico mostrando maiores altas, maiores baixas, ou ativos mais investidos",
+    "component": PageTitle,
+  }
+]
 
 const data = [
   { name: 'Jan', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
