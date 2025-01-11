@@ -61,9 +61,9 @@ import {
   LogOut,
   Sparkles,
   Wallet,
-  BriefcaseBusiness,
   Goal,
-  Newspaper
+  Newspaper,
+  DoorOpen
 } from 'lucide-vue-next'
 import { ref } from 'vue'
 
@@ -127,9 +127,9 @@ const data = {
       icon: ArrowLeftRight,
     },
     {
-      name: 'Portfólio',
-      url: '/portfolio',
-      icon: BriefcaseBusiness,
+      name: 'Carteira',
+      url: '/wallet',
+      icon: Wallet,
     },
     {
       name: 'Metas e Objetivos',
@@ -153,7 +153,7 @@ const data = {
           <SidebarMenuItem >
             <NuxtLink to="/">
               <div class="ml-2 flex items-center gap-2">
-                <Wallet class="text-2xl" />
+                <DoorOpen  class="text-2xl" />
                 <h1 class="text-2xl font-bold ">
                   tock_tock
                 </h1>

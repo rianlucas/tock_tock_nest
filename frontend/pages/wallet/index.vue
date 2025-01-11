@@ -52,7 +52,7 @@ const wallet = [
 <template>
   <div>
     <div class="flex justify-between items-center">
-      <PageTitle title="Wallet"/>
+      <PageTitle title="Carteira"/>
       <Dialog>
         <DialogTrigger as-child>
           <Button variant="outline">
