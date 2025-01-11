@@ -61,6 +61,11 @@ import { Home } from 'lucide-vue-next';
 import HomeInvestmentCards from '~/components/card/HomeInvestmentCards.vue';
 import PageTitle from '~/components/ui/page-title/PageTitle.vue';
 import { investmentCardsMock } from '~/mocks/investments-cards';
+import { definePageMeta } from '@/.nuxt/imports';
+
+definePageMeta({
+  layout: 'logged-user',
+})
 
 const data = [
   { name: 'Jan', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },

@@ -1,6 +1,10 @@
 <template>
   <div class="bg-background  h-screen">
-    <NuxtPage/>
+    <div>
+      <NavBar>
+        <NuxtPage/>
+      </NavBar>
+    </div>
   </div>
 </template>
 
