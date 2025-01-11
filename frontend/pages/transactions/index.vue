@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import PageTitle from '~/components/ui/page-title/PageTitle.vue';
 import { Badge } from '@/components/ui/badge'
+import { definePageMeta } from '@/.nuxt/imports';
+
+definePageMeta({
+  layout: 'logged-user',
+})
 
 const transactions = [
   {

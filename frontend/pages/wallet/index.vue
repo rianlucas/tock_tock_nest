@@ -29,7 +29,12 @@ import {
 } from '@internationalized/date'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
 import { Calendar } from '@/components/ui/calendar';
-import { ref } from 'vue'
+import { ref } from 'vue';
+import { definePageMeta } from '@/.nuxt/imports';
+
+definePageMeta({
+  layout: 'logged-user',
+})
 
 const df = new DateFormatter('en-US', {
   dateStyle: 'long',
@@ -52,7 +57,7 @@ const wallet = [
 <template>
   <div>
     <div class="flex justify-between items-center">
-      <PageTitle title="Wallet"/>
+      <PageTitle title="Carteira"/>
       <Dialog>
         <DialogTrigger as-child>
           <Button variant="outline">

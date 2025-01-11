@@ -1,31 +1,52 @@
 <template>
-  <div class="justify-center">
+  <div class=" min-w-0">
 
-      <PageTitle title="Portfolio"/>
+      <PageTitle title="Portifolio"/>
       <HomeInvestmentCards
         :cards="investmentCardsMock"
       />
 
-      <Card class=" mt-10 border bg-background border-[#3D4A52]">
-        <CardHeader>
-          <h1 class="text-primary text-xl">Portfolio value over time</h1>
-        </CardHeader>
-        <AreaChart 
-          class="max-h-[300px] py-10"
-          :colors="['hsl(var(--primary))']"
-          curve-type="natural"
-          :show-grid-line="false"
-          :show-legend="false"
-          :show-x-axis="true"
-          :show-y-axis="false"
-          :data="data" index="name" :categories="['total']" />
-      </Card>
+      <div class="grid md:grid-cols-[60%_40%] 2xl:grid-cols-[65%_35%] gap-4 mt-10 bg-background pr-4">
+        <Card>
+  
+          <div>
+            <CardHeader>
+              <h1 class="text-primary font-sans text-xl font-bold">Valor investido x patrimônio</h1>
+            </CardHeader>
+            <CardContent>
+              <BarChart
+                :data="data"
+                index="name"
+                :show-grid-line="false"
+                :rounded-corners="3"
+                type="grounded"
+                :categories="['patrimônio', 'investido']"
+                :y-formatter="(tick, i) => {
+                  return typeof tick === 'number'
+                    ? `R$ ${new Intl.NumberFormat('us').format(tick).toString()}`
+                    : ''
+                }"
+              />
+            </CardContent>
+          </div>
+        </Card>
+        <Card class="overflow-x-scroll">
+          <div>
+            <CardHeader>
+              <h1 class="text-primary font-sans text-xl font-bold">Ativos com maior patrimônio</h1>
+            </CardHeader>
+            <CardContent>
+              <AssetsWithHighestNetWorth/>
+            </CardContent>
+        </div>
+        </Card>
+      </div>
     </div>
-    
     
 </template>
 
 <script setup="ts">
+import AssetsWithHighestNetWorth from '@/components/card/AssetsWithHighestNetWorth.vue';
 import {
   Card,
   CardContent,
@@ -34,18 +55,52 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import BarChart from '@/components/ui/chart-bar/BarChart.vue';
+
 import { Home } from 'lucide-vue-next';
 import HomeInvestmentCards from '~/components/card/HomeInvestmentCards.vue';
 import PageTitle from '~/components/ui/page-title/PageTitle.vue';
 import { investmentCardsMock } from '~/mocks/investments-cards';
+import { definePageMeta } from '@/.nuxt/imports';
+
+definePageMeta({
+  layout: 'logged-user',
+})
 
 const data = [
-  { name: 'Jan', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Feb', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Mar', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Apr', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'May', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Jun', total: Math.floor(Math.random() * 2000) + 500},
-  { name: 'Jul', total: Math.floor(Math.random() * 2000) + 500},
+  { name: 'Jan', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Fev', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Mar', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Abr', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Mai', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Jun', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Jul', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Set', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Out', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Nov', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Dez', patrimônio: Math.floor(Math.random() * 2000) + 500, investido: Math.floor(Math.random() * 2000) + 500 },
 ]
+
+const cards = [
+  {
+    title: "Valor investido x patrimônio",
+    component: BarChart,
+    props: {
+      data: data,
+      showGridLine: false,
+      roundedCorners: 3,
+      type: "grounded",
+      yFormatter: (tick, i) =>
+        typeof tick === 'number'
+          ? `R$ ${new Intl.NumberFormat('us').format(tick).toString()}`
+          : ''
+    },
+  },
+  {
+    "title": "Ativos com maior patrimônio",
+    "component": AssetsWithHighestNetWorth,
+  }
+]
+
+
 </script>
