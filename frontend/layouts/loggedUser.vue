@@ -1,15 +1,11 @@
 <template>
-  <div class="bg-background  h-screen">
-    <div>
-      <NavBar>
-        <NuxtPage/>
-      </NavBar>
-    </div>
-  </div>
+    <NavBar>
+      <div class="w-full">
+        <NuxtPage />
+      </div>
+    </NavBar>
 </template>
 
 <script setup>
-
 import NavBar from '@/components/navBar/NavBar.vue';
-
 </script>

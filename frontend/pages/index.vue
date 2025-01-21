@@ -30,7 +30,7 @@
             </CardContent>
           </div>
         </Card>
-        <Card class="overflow-x-scroll">
+        <Card class="overflow-x-auto">
           <div>
             <CardHeader>
               <h1 class="text-primary font-sans text-xl font-bold">Ativos com maior patrimônio</h1>
@@ -38,7 +38,7 @@
             <CardContent>
               <AssetsWithHighestNetWorth/>
             </CardContent>
-        </div>
+          </div>
         </Card>
       </div>
     </div>
