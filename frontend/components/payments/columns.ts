@@ -103,7 +103,7 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: 'fee',
-    header: 'Fee',
+    header: 'Taxa',
     cell: ({ row }) => {
       const fee = Number.parseFloat(row.getValue('fee'));
 
@@ -112,7 +112,7 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: 'net',
-    header: 'Net',
+    header: 'Líquido',
     cell: ({ row }) => {
       const net = Number.parseFloat(row.getValue('net'));
 
