@@ -5,15 +5,6 @@ import {
   AvatarImage,
 } from '@/components/ui/avatar'
 
-// import {
-//   Breadcrumb,
-//   BreadcrumbItem,
-//   BreadcrumbLink,
-//   BreadcrumbList,
-//   BreadcrumbPage,
-//   BreadcrumbSeparator,
-// } from '@/components/ui/breadcrumb'
-
 import {
   Collapsible,
   CollapsibleContent,
@@ -286,9 +277,8 @@ const data = {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-    <SidebarInset class="mx-auto pt-6 max-w-screen-2xl transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-      
-      <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+    <SidebarInset class="pt-6 overflow-x-hidden flex-1 min-w-0 max-w-screen-2xl mx-auto">
+      <header class="flex h-16 shrink-0 items-center gap-2">
         <div class="flex items-center gap-2 px-4">
           <SidebarTrigger class="-ml-1" />
           <Separator orientation="vertical" class="mr-2 h-4" />
@@ -296,7 +286,7 @@ const data = {
         </div>
       </header>
       
-      <div class="gap-2 px-4 min-w-0">
+      <div class="p-4 w-full min-w-0">
         <slot/>
       </div>
     </SidebarInset>
