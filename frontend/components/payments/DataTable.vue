@@ -43,6 +43,10 @@ const table = useVueTable({
     get columnFilters() { return columnFilters.value },
   }
 })
+
+const onSubmit = () => {
+  console.log('onAdd')
+}
 </script>
 
 <template>
@@ -53,7 +57,12 @@ const table = useVueTable({
       :model-value="table.getColumn('ticket')?.getFilterValue() as string"
       @update:model-value=" table.getColumn('ticket')?.setFilterValue($event)" />
     
-      <ModalAddNewAsset />
+      <ModalAddNewAsset
+        :on-submit="onSubmit"
+        title="Nova transação"
+        description="Adicione uma nova transação. Clique em adicionar quando estiver pronto."
+        button-text="Adicionar"
+      />
     </div>
     <div class="border rounded-lg">
     <Table class="">

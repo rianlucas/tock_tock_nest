@@ -3,6 +3,9 @@ import type { ColumnDef } from '@tanstack/vue-table';
 import Badge from '../ui/badge/Badge.vue';
 import { Checkbox } from '../ui/checkbox';
 import { Pencil, Trash2 } from 'lucide-vue-next';
+import DeleteModal from "@/components/modal/Delete.vue";
+import Edit from "@/components/modal/Edit.vue";
+import AddNewAsset from '../modal/AddNewAsset.vue';
 
 export type Transaction = {
   date: string;
@@ -125,21 +128,18 @@ export const columns: ColumnDef<Transaction>[] = [
     cell: ({ row }) => {
       const ticket = row.getValue('ticket');
       return h('div', { class: 'flex gap-2' }, [
-        h(Pencil, {
-          size: 16,
-          class:
-            'btn btn-primary cursor-pointer hover:text-blue-500 transition-colors',
-          onClick: () => {
-            console.log(`Refund ticket ${ticket}`);
-          },
+        h(Edit, {
+          onSubmit: () => {
+            console.log(`Editing ticket ${ticket}`)
+          }
         }),
-        h(Trash2, {
-          class:
-            'btn btn-primary cursor-pointer hover:text-red-500 transition-colors',
-          size: 16,
-          onClick: () => {
-            console.log(`Refund ticket ${ticket}`);
-          },
+        h(DeleteModal, {
+            title: "Você tem certeza que deseja deletar a transação ?",
+            description: "Essa ação não pode ser desfeita. Isso vai excluir permanentemente a transação\n" +
+              "          e remover o registro do nosso servidor.",
+            onSubmit: () => {
+              console.log(`Deleting ticket ${ticket}`);
+            },
         }),
       ]);
     },

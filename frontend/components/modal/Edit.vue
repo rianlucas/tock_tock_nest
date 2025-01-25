@@ -1,61 +1,47 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import {
-  DateFormatter,
   type DateValue,
   getLocalTimeZone,
+  DateFormatter,
 } from '@internationalized/date'
-import { Calendar as CalendarIcon } from 'lucide-vue-next'
+import { Calendar as CalendarIcon, Pencil } from 'lucide-vue-next'
+
+const value = ref<DateValue>()
+const df = new DateFormatter('en-US', {
+  dateStyle: 'long',
+})
 
 interface Props {
   onSubmit: (asset: Asset) => void
-  title: string
-  description: string
-  buttonText: string
-  triggerButton?: any
 }
+defineProps<Props>()
 
-const props = defineProps<Props>()
-
-const value = ref<DateValue>()
-  const df = new DateFormatter('en-US', {
-  dateStyle: 'long',
-})
-console.log(props.triggerButton)
 </script>
 
 
 <template>
   <Dialog>
-    <DialogTrigger as-child ">
-      <template v-if="triggerButton">
-        <component 
-          :is="triggerButton"
-          :size="16"
-          class="btn btn-primary cursor-pointer hover:text-blue-500 transition-colors"
-          stroke-width="2"
-        />
-      </template>
-      <template v-else>
-        <Button variant="outline">
-          {{ title }}
-        </Button>
-      </template>
+    <DialogTrigger as-child>
+      <Pencil
+        :size="16"
+        class="btn btn-primary cursor-pointer hover:text-blue-500 transition-colors"
+      />
     </DialogTrigger>
-      <DialogContent class="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{{ title }}</DialogTitle>
-          <DialogDescription>
-            {{ description }} 
-          </DialogDescription>
-        </DialogHeader>
-        <div class="grid gap-4 py-4">
-          <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="ticket" class="text-right">
-              Ticket
-            </Label>
-            <Input id="ticket" default-value="BBAS3" class="col-span-3" />
-          </div>
+    <DialogContent class="sm:max-w-[425px]">
+      <DialogHeader>
+        <DialogTitle>Editar transação</DialogTitle>
+        <DialogDescription>
+          Edite sua transação aqui. Clique em salvar quando estiver terminado.
+        </DialogDescription>
+      </DialogHeader>
+      <div class="grid gap-4 py-4">
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="ticket" class="text-right">
+            Ticket
+          </Label>
+          <Input id="ticket" default-value="BBAS3" class="col-span-3" />
+        </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="quantity" class="text-right">
             Quantidade
@@ -80,8 +66,8 @@ console.log(props.triggerButton)
           </Label>
           <Popover>
             <PopoverTrigger as-child>
-              <Button
-                variant="outline"
+            <Button
+            variant="outline"
                 :class="cn(
                   'w-[280px] justify-start text-left font-normal',
                   !value && 'text-muted-foreground',
@@ -98,9 +84,12 @@ console.log(props.triggerButton)
         </div>
       </div>
       <DialogFooter>
-        <Button type="submit" @click="props.onSubmit">
-          {{ buttonText }}
-        </Button>
+        <DialogTrigger>
+
+          <Button type="submit" @click="onSubmit">
+            Salvar
+          </Button>
+        </DialogTrigger>
       </DialogFooter>
     </DialogContent>
   </Dialog>
