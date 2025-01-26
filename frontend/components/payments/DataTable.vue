@@ -17,6 +17,7 @@ import {
   FlexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   useVueTable,
 } from '@tanstack/vue-table'
 import { ref } from 'vue'
@@ -37,11 +38,12 @@ const table = useVueTable({
   get data() { return props.data },
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
   onColumnFiltersChange: updaterOrValue => valueUpdater(updaterOrValue, columnFilters),
-    getFilteredRowModel: getFilteredRowModel(),
+  getFilteredRowModel: getFilteredRowModel(),
   state: {
     get columnFilters() { return columnFilters.value },
-  }
+  },
 })
 
 const onSubmit = () => {
@@ -99,6 +101,31 @@ const onSubmit = () => {
           </TableRow>
         </TableBody>
       </Table>
+    </div>
+
+    <div class="flex items-center justify-end space-x-2 py-4">
+      <div class="flex-1 text-sm text-muted-foreground">
+        Página {{ table.getState().pagination.pageIndex + 1 }} de
+        {{ table.getPageCount() }}
+      </div>
+      <div class="space-x-2">
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanPreviousPage()"
+          @click="table.previousPage()"
+        >
+          Anterior
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          :disabled="!table.getCanNextPage()"
+          @click="table.nextPage()"
+        >
+          Próxima
+        </Button>
+      </div>
     </div>
   </div>
 </template>

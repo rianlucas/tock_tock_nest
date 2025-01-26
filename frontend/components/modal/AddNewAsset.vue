@@ -6,6 +6,7 @@ import {
   getLocalTimeZone,
 } from '@internationalized/date'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
+import type { Asset } from '@/types';
 
 interface Props {
   onSubmit: (asset: Asset) => void
