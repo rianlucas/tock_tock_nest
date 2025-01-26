@@ -22,7 +22,6 @@ const value = ref<DateValue>()
   const df = new DateFormatter('en-US', {
   dateStyle: 'long',
 })
-console.log(props.triggerButton)
 </script>
 
 
@@ -99,9 +98,11 @@ console.log(props.triggerButton)
         </div>
       </div>
       <DialogFooter>
-        <Button type="submit" @click="props.onSubmit">
-          {{ buttonText }}
-        </Button>
+        <DialogTrigger>
+          <Button type="submit" @click="props.onSubmit">
+            {{ buttonText }}
+          </Button>
+        </DialogTrigger>
       </DialogFooter>
     </DialogContent>
   </Dialog>

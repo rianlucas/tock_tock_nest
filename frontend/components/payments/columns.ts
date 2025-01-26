@@ -6,6 +6,7 @@ import { Pencil, Trash2 } from 'lucide-vue-next';
 import DeleteModal from "@/components/modal/Delete.vue";
 import Edit from "@/components/modal/Edit.vue";
 import AddNewAsset from '../modal/AddNewAsset.vue';
+import { useToast } from '../ui/toast/use-toast.js';
 
 export type Transaction = {
   date: string;
@@ -17,6 +18,8 @@ export type Transaction = {
   fee: number;
   net: number;
 };
+
+const { toast } = useToast()
 
 export const columns: ColumnDef<Transaction>[] = [
   // {
@@ -130,6 +133,11 @@ export const columns: ColumnDef<Transaction>[] = [
       return h('div', { class: 'flex gap-2' }, [
         h(Edit, {
           onSubmit: () => {
+            toast({
+              title: "Transação atualizada",
+              description: "Sua transação foi atualizada com sucesso!!",
+              variant: "default"
+            })
             console.log(`Editing ticket ${ticket}`)
           }
         }),
@@ -138,6 +146,11 @@ export const columns: ColumnDef<Transaction>[] = [
             description: "Essa ação não pode ser desfeita. Isso vai excluir permanentemente a transação\n" +
               "          e remover o registro do nosso servidor.",
             onSubmit: () => {
+              toast({
+                title: "Transação deletada",
+                description: "Sua transação foi deletada com sucesso!!",
+                variant: "destructive"
+              })
               console.log(`Deleting ticket ${ticket}`);
             },
         }),

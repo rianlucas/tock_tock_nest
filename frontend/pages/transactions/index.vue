@@ -6,6 +6,7 @@ import { columns, type Transaction } from '@/components/payments/columns';
 import { ref } from 'vue';
 import { valueUpdater } from '@/utils/value-table-updater';
 import { getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable, type ColumnFiltersState, type ExpandedState, type SortingState, type VisibilityState } from '@tanstack/vue-table';
+import { Toaster } from '@/components/ui/toast'
 
 definePageMeta({
   layout: 'logged-user',
@@ -232,5 +233,6 @@ const table = useVueTable({
     <PageTitle title="Transações" />
     
     <DataTable :columns="columns" :data="transactions"/>
+    <Toaster/>
   </div>
 </template>

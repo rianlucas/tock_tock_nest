@@ -23,6 +23,7 @@ import {
 import { ref } from 'vue'
 import { valueUpdater } from '@/utils/value-table-updater';
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
+import { useToast } from '../ui/toast/use-toast.js'
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -46,7 +47,14 @@ const table = useVueTable({
   },
 })
 
+const { toast } = useToast()
+
 const onSubmit = () => {
+  toast({
+    title: "Transação criada",
+    description: "Sua transação foi adicionada com sucesso!!",
+    variant: "default"
+  })
   console.log('onAdd')
 }
 </script>
