@@ -150,7 +150,7 @@ export const columns: ColumnDef<Transaction>[] = [
                 title: "Transação deletada",
                 description: "Sua transação foi deletada com sucesso!!",
                 variant: "destructive"
-              })
+              })  
               console.log(`Deleting ticket ${ticket}`);
             },
         }),
