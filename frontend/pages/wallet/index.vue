@@ -26,11 +26,13 @@ import {
   DateFormatter,
   type DateValue,
   getLocalTimeZone,
+  CalendarDate,
 } from '@internationalized/date'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
 import { Calendar } from '@/components/ui/calendar';
 import { ref } from 'vue';
 import { definePageMeta } from '@/.nuxt/imports';
+import { toast } from '@/components/ui/toast/use-toast';
 
 definePageMeta({
   layout: 'logged-user',
@@ -40,7 +42,11 @@ const df = new DateFormatter('en-US', {
   dateStyle: 'long',
 })
 
-const value = ref<DateValue>()
+const value = ref<DateValue>(new CalendarDate(
+  new Date().getFullYear(),
+  new Date().getMonth() + 1,
+  new Date().getDate()
+))
 
 const wallet = [
   {
@@ -52,13 +58,27 @@ const wallet = [
     profitLoss: -80.00
   }
 ]
+
+const onSubmit = () => {
+  toast({
+    title: "Transação criada",
+    description: "Sua transação foi adicionada com sucesso!!",
+    variant: "default"
+  })
+  console.log('onAdd')
+}
 </script>
 
 <template>
   <div>
     <div class="flex justify-between items-center">
       <PageTitle title="Carteira"/>
-      <ModalAddNewAsset />
+      <ModalAddNewAsset 
+        :on-submit="onSubmit"
+        title="Nova transação"
+        description="Adicione uma nova transação. Clique em adicionar quando estiver pronto."
+        button-text="Adicionar"
+      />
     </div>    
 
     <Table class="pt-4">
@@ -90,6 +110,7 @@ const wallet = [
         </TableRow>
       </TableBody>
     </Table>
+    <Toaster/>
   </div>
 
 

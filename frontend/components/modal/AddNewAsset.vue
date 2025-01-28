@@ -6,10 +6,10 @@ import {
   getLocalTimeZone,
 } from '@internationalized/date'
 import { Calendar as CalendarIcon } from 'lucide-vue-next'
-import type { Asset } from '@/types';
+import type { Asset, CreateTransactionSchema, Transaction } from '@/types';
 
 interface Props {
-  onSubmit: (asset: Asset) => void
+  onSubmit: (transaction: CreateTransactionSchema) => void
   title: string
   description: string
   buttonText: string
@@ -22,12 +22,36 @@ const value = ref<DateValue>()
   const df = new DateFormatter('en-US', {
   dateStyle: 'long',
 })
+
+const ticket = ref<number>();
+const quantity = ref<number | string>('');
+const transactionType = ref<'buy' | 'sell'>('buy');
+const unitPrice = ref<number | string>('');
+const tax = ref<number>();
+const wallet = ref<number>(1);
+
+const submitForm = () => {
+  if (!ticket.value || !quantity.value || !unitPrice.value || !tax.value || !value.value) {
+    console.log("Please fill in all fields.");
+    return;
+  }
+
+  const transaction: CreateTransactionSchema = {
+    type: transactionType.value,
+    quantity: Number(quantity.value),
+    amount: Number(unitPrice.value) * Number(quantity.value),
+    assetId: ticket.value,
+    walletId: wallet.value
+  };
+  props.onSubmit(transaction);
+};
+
 </script>
 
 
 <template>
   <Dialog>
-    <DialogTrigger as-child ">
+    <DialogTrigger as-child>
       <template v-if="triggerButton">
         <component 
           :is="triggerButton"
@@ -42,38 +66,44 @@ const value = ref<DateValue>()
         </Button>
       </template>
     </DialogTrigger>
-      <DialogContent class="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{{ title }}</DialogTitle>
-          <DialogDescription>
-            {{ description }} 
-          </DialogDescription>
-        </DialogHeader>
-        <div class="grid gap-4 py-4">
-          <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="ticket" class="text-right">
-              Ticket
-            </Label>
-            <Input id="ticket" default-value="BBAS3" class="col-span-3" />
-          </div>
+
+    <DialogContent class="sm:max-w-[425px]">
+      <DialogHeader>
+        <DialogTitle>{{ title }}</DialogTitle>
+        <DialogDescription>
+          {{ description }} 
+        </DialogDescription>
+      </DialogHeader>
+
+      <div class="grid gap-4 py-4">
+        <div class="grid grid-cols-4 items-center gap-4">
+          <Label for="ticket" class="text-right">
+            Ticket
+          </Label>
+          <Input v-model="ticket" id="ticket" class="col-span-3" placeholder="Digite o ticket do ativo"/>
+        </div>
+
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="quantity" class="text-right">
             Quantidade
           </Label>
-          <Input id="quantity" default-value="32" class="col-span-3" />
+          <Input v-model="quantity" id="quantity" class="col-span-3" placeholder="Digite a quantidade " />
         </div>
+
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="username" class="text-right whitespace-nowrap">
             Preço Unitário
           </Label>
-          <Input id="username" default-value="26,76" class="col-span-3" />
+          <Input v-model="unitPrice" id="username" class="col-span-3" placeholder="Digite o preço de cada ativo" />
         </div>
+
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="taxa" class="text-right">
             Taxa
           </Label>
-          <Input id="taxa" default-value="2,52" class="col-span-3" />
+          <Input v-model="tax" id="taxa" class="col-span-3" placeholder="Digite a taxa da transação"/>
         </div>
+
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="username" class="text-right">
             Data
@@ -97,12 +127,11 @@ const value = ref<DateValue>()
           </Popover>
         </div>
       </div>
+
       <DialogFooter>
-        <DialogTrigger>
-          <Button type="submit" @click="props.onSubmit">
-            {{ buttonText }}
-          </Button>
-        </DialogTrigger>
+        <Button type="button" @click="submitForm">
+          {{ buttonText }}
+        </Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

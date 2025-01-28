@@ -41,12 +41,20 @@ export type Transaction = {
   type: string
   amount: number
   quantity: number
-  createdAt: Date
-  updatedAt: Date
+  createdAt?: Date
+  updatedAt?: Date
   walletId: string
   wallet?: Wallet
   assetId: string
   asset?: Asset
+}
+
+export type CreateTransactionSchema = {
+  type: string
+  amount: number
+  quantity: number
+  walletId: number
+  assetId: number
 }
 
 export type WalletAssetSummaries = {
