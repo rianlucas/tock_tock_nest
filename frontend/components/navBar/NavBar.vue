@@ -197,10 +197,10 @@ const data = {
               :key="item.name"
             >
               <SidebarMenuButton as-child>
-                <a :href="item.url">
+                <NuxtLink :to="item.url">
                   <component :is="item.icon" />
                   <span>{{ item.name }}</span>
-                </a>
+                </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -285,9 +285,8 @@ const data = {
           <Breadcrumb/>
         </div>
       </header>
-      
       <div class="p-4 w-full min-w-0">
-        <slot/>
+        <NuxtPage/>
       </div>
     </SidebarInset>
   </SidebarProvider>
