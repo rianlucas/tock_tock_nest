@@ -11,18 +11,18 @@
         </CardHeader>
         <CardContent>
           <CardTitle class="font-bold text-primary">
-            {{ data.title === 'PL' && data.value > 0 ? `${data.value}%` : `R$ ${data.value}` }}   
+            {{ data.title === 'Rentabilidade' && data.value > 0 ? `${data.value}%` : `R$ ${data.value}` }}   
           </CardTitle>
           <CardDescription 
             :class='[
               "text-base mt-2",
               data.variation < 0 ? "text-red-400" : "text-green-400"
             ]'>
-            <template v-if="data.title === 'Atual'">
-              {{ data.variation >= 0 ? '+' : '' }}R${{ data.variation }}
+            <template v-if="data.title === 'Saldo Bruto'">
+              {{ data.variation != null ? (data.variation >= 0 ? '+' : '') + data.variation : '-' }}
             </template>
             <template v-else>
-              {{ data.variation >= 0 ? '+' : '' }}{{ data.variation }}%
+              {{ data.variation != null ? (data.variation >= 0 ? '+' : '') + data.variation + '%' : '' }}
             </template>
           </CardDescription>
         </CardContent>
