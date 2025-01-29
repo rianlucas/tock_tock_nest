@@ -8,6 +8,8 @@ import {
   Delete,
   UsePipes,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { AssetService } from './asset.service';
 import { CreateAssetDto, createAssetSchema } from './dto/create-asset.dto';
@@ -46,7 +48,8 @@ export class AssetController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string) {
-    return this.assetService.remove(id);
+    await this.assetService.remove(id);
   }
 }
