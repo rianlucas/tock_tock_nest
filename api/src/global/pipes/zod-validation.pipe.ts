@@ -7,7 +7,7 @@ export class ZodValidationPipe implements PipeTransform {
 
   transform(value: any) {
     try {
-      this.zodSchema.parse(value);
+      return this.zodSchema.parse(value);
     } catch (exception: unknown) {
       throw exception;
     }
