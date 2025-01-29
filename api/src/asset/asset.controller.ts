@@ -6,15 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UsePipes,
 } from '@nestjs/common';
 import { AssetService } from './asset.service';
-import { CreateAssetDto } from './dto/create-asset.dto';
+import { CreateAssetDto, createAssetSchema } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
+import { ZodValidationPipe } from '../global/pipes/zod-validation.pipe';
 
 @Controller('asset')
 export class AssetController {
   constructor(private readonly assetService: AssetService) {}
 
+  @UsePipes(new ZodValidationPipe(createAssetSchema))
   @Post()
   async create(@Body() createAssetDto: CreateAssetDto) {
     return this.assetService.create(createAssetDto);
