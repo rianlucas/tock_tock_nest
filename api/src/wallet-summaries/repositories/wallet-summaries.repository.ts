@@ -1,18 +1,28 @@
-import { WalletAssetSummaries } from '@prisma/client';
+import { Prisma, WalletAssetSummaries } from '@prisma/client';
 import { CreateTransactionDto } from './../../transaction/dto/create-transaction.dto';
 import { UpdateWalletSummariesDto } from '../dto/update-walllet-summaries.dto';
+
 export interface WalletSummariesRepository {
   findByTransaction(
     transaction: CreateTransactionDto,
+    tx: Prisma.TransactionClient,
   ): Promise<WalletAssetSummaries>;
 
   findByAssetAndWalletId(
-    walletId: string,
-    assetId: string,
-  ): Promise<WalletAssetSummaries>;
+    payload: {
+      walletId: string;
+      assetId: string;
+    },
+    tx: Prisma.TransactionClient,
+  ): Promise<WalletAssetSummaries | null>;
 
   update(
-    id: string,
     walletAssetSummaries: UpdateWalletSummariesDto,
+    tx: Prisma.TransactionClient,
+  ): Promise<WalletAssetSummaries>;
+
+  create(
+    payload: { walletId: string; assetId: string },
+    tx: Prisma.TransactionClient,
   ): Promise<WalletAssetSummaries>;
 }

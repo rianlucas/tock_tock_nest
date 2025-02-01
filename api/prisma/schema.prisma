@@ -29,8 +29,6 @@ model User {
 model Wallet {
   id                   String                 @id @default(uuid())
   name                 String
-  totalInvested        Float                  @default(0)
-  grossBalance         Float                  @default(0)
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
   userId               String
@@ -75,7 +73,7 @@ model WalletAssetSummaries {
   assetCount    Float
   totalInvested Float
   grossBalance  Float
-  //rentability
+  rentability   Float    @default(0.0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }

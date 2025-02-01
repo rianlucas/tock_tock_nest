@@ -1,7 +1,7 @@
 import { CreateTransactionDto } from './../transaction/dto/create-transaction.dto';
 import { Inject, Injectable } from '@nestjs/common';
 import { WalletSummariesRepository } from './repositories/wallet-summaries.repository';
-import { WalletAssetSummaries } from '@prisma/client';
+import { Prisma, WalletAssetSummaries } from '@prisma/client';
 
 @Injectable()
 export class WalletSummariesService {
@@ -31,18 +31,22 @@ export class WalletSummariesService {
     return walletSummaries;
   }
 
-  async update(transaction: CreateTransactionDto) {
+  async update(
+    transaction: CreateTransactionDto,
+    tx: Prisma.TransactionClient,
+  ) {
     const walletSummaries =
-      await this.walletSummariesRepository.findByTransaction(transaction);
+      await this.walletSummariesRepository.findByTransaction(transaction, tx);
 
     const updatedWalletSummaries = await this.calculateAverageAssetPrice(
       walletSummaries,
       transaction,
     );
 
-    return this.walletSummariesRepository.update(
-      updatedWalletSummaries.id,
-      updatedWalletSummaries,
-    );
+    //TODO: calculate reability
+
+    return this.walletSummariesRepository.update(updatedWalletSummaries, tx);
   }
+
+  //TODO: create a method to update grossBalance according to asset value in real time (when the user logs in)
 }

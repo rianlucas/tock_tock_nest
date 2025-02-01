@@ -8,6 +8,7 @@ import { WalletSummariesService } from '../wallet-summaries/wallet-summaries.ser
 import { PrismaService } from '@/prisma/prisma.service';
 import { WalletSummariesRepository } from '../wallet-summaries/repositories/wallet-summaries.repository';
 import { UnprocessableEntityError } from '../global/errors/unprocessable-entity.error';
+import { Prisma, WalletAssetSummaries } from '@prisma/client';
 
 @Injectable()
 export class TransactionService {
@@ -33,13 +34,10 @@ export class TransactionService {
     await this.assetRepository.findOne(assetId);
   }
 
-  async checkIfUserCanSell(transaction: CreateTransactionDto): Promise<void> {
-    const walletAssetSummaries =
-      await this.walletSummariesRepository.findByAssetAndWalletId(
-        transaction.walletId,
-        transaction.assetId,
-      );
-
+  async checkIfUserCanSell(
+    transaction: CreateTransactionDto,
+    walletAssetSummaries: WalletAssetSummaries,
+  ): Promise<void> {
     if (
       walletAssetSummaries.assetCount < transaction.quantity &&
       transaction.type === 'sell'
@@ -52,19 +50,52 @@ export class TransactionService {
     }
   }
 
+  async createWalletSummariesIfDoesNotExist(
+    transaction: CreateTransactionDto,
+    tx: Prisma.TransactionClient,
+  ): Promise<WalletAssetSummaries> {
+    const walletAssetSummaries =
+      await this.walletSummariesRepository.findByAssetAndWalletId(
+        {
+          walletId: transaction.walletId,
+          assetId: transaction.assetId,
+        },
+        tx,
+      );
+    if (!walletAssetSummaries) {
+      return await this.walletSummariesRepository.create(
+        {
+          walletId: transaction.walletId,
+          assetId: transaction.assetId,
+        },
+        tx,
+      );
+    }
+
+    return walletAssetSummaries;
+  }
+
   async create(createTransactionDto: CreateTransactionDto) {
     await this.checkIfWalletAndAssetExist(
       createTransactionDto.walletId,
       createTransactionDto.assetId,
     );
+    const transaction = await this.prisma.$transaction(async (tx) => {
+      const walletAssetSummaries =
+        await this.createWalletSummariesIfDoesNotExist(
+          createTransactionDto,
+          tx,
+        );
 
-    await this.checkIfUserCanSell(createTransactionDto);
+      await this.checkIfUserCanSell(createTransactionDto, walletAssetSummaries);
 
-    const transaction = await this.prisma.$transaction(async () => {
-      const transaction =
-        await this.transactionRepository.create(createTransactionDto);
+      const transaction = await this.transactionRepository.create(
+        createTransactionDto,
+        tx,
+      );
 
-      await this.walletSummariesService.update(createTransactionDto);
+      await this.walletSummariesService.update(createTransactionDto, tx);
+
       return transaction;
     });
 

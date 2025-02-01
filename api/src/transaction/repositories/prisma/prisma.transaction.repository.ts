@@ -1,4 +1,4 @@
-import { Transaction } from '@prisma/client';
+import { Prisma, Transaction } from '@prisma/client';
 import { CreateTransactionDto } from '../../dto/create-transaction.dto';
 import { UpdateTransactionDto } from '../../dto/update-transaction.dto';
 import { TransactionRepository } from '../transaction.repository';
@@ -27,8 +27,13 @@ export class PrismaTransactionRepository implements TransactionRepository {
     return this.prisma.transaction.findMany();
   }
 
-  async create(wallet: CreateTransactionDto): Promise<Transaction> {
-    return this.prisma.transaction.create({
+  async create(
+    wallet: CreateTransactionDto,
+    tx: Prisma.TransactionClient,
+  ): Promise<Transaction> {
+    const prismaClient = tx ?? this.prisma;
+
+    return prismaClient.transaction.create({
       data: {
         amount: wallet.amount,
         type: wallet.type,

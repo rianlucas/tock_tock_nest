@@ -1,5 +1,5 @@
 import { CreateTransactionDto } from '@/src/transaction/dto/create-transaction.dto';
-import { WalletAssetSummaries } from '@prisma/client';
+import { Prisma, WalletAssetSummaries } from '@prisma/client';
 import { WalletSummariesRepository } from '../wallet-summaries.repository';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
@@ -12,48 +12,72 @@ export class PrismaWalletSummariesRepository
 {
   constructor(private readonly prisma: PrismaService) {}
 
+  async create(
+    payload: { walletId: string; assetId: string },
+    tx: Prisma.TransactionClient,
+  ) {
+    const prismaClient = tx ?? this.prisma;
+    return prismaClient.walletAssetSummaries.create({
+      data: {
+        averagePrice: 0,
+        assetCount: 0,
+        totalInvested: 0,
+        grossBalance: 0,
+        rentability: 0,
+        walletId: payload.walletId,
+        assetId: payload.assetId,
+      },
+    });
+  }
+
   async findByTransaction(
     transaction: CreateTransactionDto,
+    tx: Prisma.TransactionClient,
   ): Promise<WalletAssetSummaries> {
-    const wallletAssetSummaries =
-      await this.prisma.walletAssetSummaries.findFirst({
+    const prismaClient = tx ?? this.prisma;
+    const walletAssetSummaries =
+      await prismaClient.walletAssetSummaries.findFirst({
         where: { walletId: transaction.walletId, assetId: transaction.assetId },
       });
 
-    if (!wallletAssetSummaries) {
+    if (!walletAssetSummaries) {
       throw new NotFoundError({
         message: 'WalletAssetSummaries not found',
         action: 'Try again with a valid walletId and assetId',
       });
     }
 
-    return wallletAssetSummaries;
+    return walletAssetSummaries;
   }
 
   async findByAssetAndWalletId(
-    walletId: string,
-    assetId: string,
-  ): Promise<WalletAssetSummaries> {
-    return this.prisma.walletAssetSummaries.findFirstOrThrow({
-      where: { walletId, assetId },
+    payload: {
+      walletId: string;
+      assetId: string;
+    },
+    tx: Prisma.TransactionClient,
+  ): Promise<WalletAssetSummaries | null> {
+    const prismaClient = tx ?? this.prisma;
+    return prismaClient.walletAssetSummaries.findFirst({
+      where: { walletId: payload.walletId, assetId: payload.assetId },
     });
   }
 
   async update(
-    id: string,
     walletAssetSummaries: UpdateWalletSummariesDto,
+    tx: Prisma.TransactionClient,
   ): Promise<WalletAssetSummaries> {
-    return this.prisma.walletAssetSummaries.update({
-      where: { id: '5cba04d0-ce0d-45d2-9986-de4ff80df558' },
+    const prismaClient = tx ?? this.prisma;
+    return prismaClient.walletAssetSummaries.update({
+      where: { id: walletAssetSummaries.id },
       data: {
-        id: '5cba04d0-ce0d-45d2-9986-de4ff80df558',
         averagePrice: isNaN(walletAssetSummaries.averagePrice)
           ? 0
           : walletAssetSummaries.averagePrice,
         assetCount: walletAssetSummaries.assetCount ?? 0,
         totalInvested: walletAssetSummaries.totalInvested ?? 0,
-        createdAt: new Date('2024-11-06T01:47:39.085Z'),
-        updatedAt: new Date(),
+        grossBalance: walletAssetSummaries.grossBalance ?? 0,
+        rentability: walletAssetSummaries.rentability ?? 0,
 
         wallet: {
           connect: { id: walletAssetSummaries.walletId },

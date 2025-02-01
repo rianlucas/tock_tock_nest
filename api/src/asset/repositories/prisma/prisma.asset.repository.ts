@@ -42,13 +42,6 @@ export class PrismaAssetRepository implements AssetRepository {
         name: assetDto.name,
         ticket: assetDto.ticket,
         price: assetDto.price,
-        wallet: {
-          connect: [
-            {
-              id: assetDto.walletId,
-            },
-          ],
-        },
       },
     });
   }
