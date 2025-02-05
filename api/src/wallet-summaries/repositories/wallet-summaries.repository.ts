@@ -25,4 +25,6 @@ export interface WalletSummariesRepository {
     payload: { walletId: string; assetId: string },
     tx: Prisma.TransactionClient,
   ): Promise<WalletAssetSummaries>;
+
+  getMostValuableAssets(walletId: string): Promise<WalletAssetSummaries[]>;
 }

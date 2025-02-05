@@ -49,4 +49,8 @@ export class WalletSummariesService {
   }
 
   //TODO: create a method to update grossBalance according to asset value in real time (when the user logs in)
+
+  async getMostValuableAssets(walletId: string) {
+    return this.walletSummariesRepository.getMostValuableAssets(walletId);
+  }
 }

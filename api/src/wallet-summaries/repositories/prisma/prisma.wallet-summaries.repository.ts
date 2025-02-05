@@ -12,6 +12,16 @@ export class PrismaWalletSummariesRepository
 {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getMostValuableAssets(
+    walletId: string,
+  ): Promise<WalletAssetSummaries[]> {
+    return this.prisma.walletAssetSummaries.findMany({
+      where: { walletId },
+      orderBy: { grossBalance: 'desc' },
+      take: 6,
+    });
+  }
+
   async create(
     payload: { walletId: string; assetId: string },
     tx: Prisma.TransactionClient,

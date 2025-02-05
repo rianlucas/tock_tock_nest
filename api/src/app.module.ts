@@ -5,10 +5,9 @@ import { UserModule } from './user/user.module';
 import { WalletModule } from './wallet/wallet.module';
 import { AssetModule } from './asset/asset.module';
 import { TransactionModule } from './transaction/transaction.module';
-import { WalletSummariesService } from './wallet-summaries/wallet-summaries.service';
-import { PrismaWalletSummariesRepository } from './wallet-summaries/repositories/prisma/prisma.wallet-summaries.repository';
 import { PrismaService } from '@/prisma/prisma.service';
 import { AuthModule } from './auth/auth.module';
+import { WalletSummariesModule } from './wallet-summaries/wallet-summaries.module';
 
 @Module({
   imports: [
@@ -17,16 +16,9 @@ import { AuthModule } from './auth/auth.module';
     AssetModule,
     TransactionModule,
     AuthModule,
+    WalletSummariesModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    WalletSummariesService,
-    {
-      provide: 'WalletSummariesRepository',
-      useClass: PrismaWalletSummariesRepository,
-    },
-    PrismaService,
-  ],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
