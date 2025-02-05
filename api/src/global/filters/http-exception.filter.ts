@@ -20,6 +20,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         },
       });
     }
+    console.error(exception);
 
     if (exception instanceof ZodError) {
       return response.status(400).json({
