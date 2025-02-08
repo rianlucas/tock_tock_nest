@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 import { NotFoundError } from '@/src/global/errors/not-found.error';
 import { UpdateWalletSummariesDto } from '../../dto/update-walllet-summaries.dto';
+import { WalletAssetSummariesWithAsset } from '../../@types/wallet-summaries-asset.relation';
 
 @Injectable()
 export class PrismaWalletSummariesRepository
@@ -19,6 +20,9 @@ export class PrismaWalletSummariesRepository
       where: { walletId },
       orderBy: { grossBalance: 'desc' },
       take: 6,
+      include: {
+        asset: true,
+      },
     });
   }
 
@@ -43,11 +47,14 @@ export class PrismaWalletSummariesRepository
   async findByTransaction(
     transaction: CreateTransactionDto,
     tx: Prisma.TransactionClient,
-  ): Promise<WalletAssetSummaries> {
+  ): Promise<WalletAssetSummariesWithAsset> {
     const prismaClient = tx ?? this.prisma;
     const walletAssetSummaries =
       await prismaClient.walletAssetSummaries.findFirst({
         where: { walletId: transaction.walletId, assetId: transaction.assetId },
+        include: {
+          asset: true,
+        },
       });
 
     if (!walletAssetSummaries) {
