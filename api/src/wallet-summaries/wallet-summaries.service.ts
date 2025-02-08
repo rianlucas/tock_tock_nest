@@ -2,6 +2,7 @@ import { CreateTransactionDto } from './../transaction/dto/create-transaction.dt
 import { Inject, Injectable } from '@nestjs/common';
 import { WalletSummariesRepository } from './repositories/wallet-summaries.repository';
 import { Prisma, WalletAssetSummaries } from '@prisma/client';
+import { WalletAssetSummariesWithAsset } from './@types/wallet-summaries-asset.relation';
 
 @Injectable()
 export class WalletSummariesService {
@@ -31,6 +32,13 @@ export class WalletSummariesService {
     return walletSummaries;
   }
 
+  async updateGrossBalance(
+    walletSummaries: WalletAssetSummariesWithAsset,
+  ): Promise<number> {
+    return (walletSummaries.grossBalance =
+      walletSummaries.asset.price * walletSummaries.assetCount);
+  }
+
   async update(
     transaction: CreateTransactionDto,
     tx: Prisma.TransactionClient,
@@ -43,12 +51,17 @@ export class WalletSummariesService {
       transaction,
     );
 
-    //TODO: calculate reability
+    updatedWalletSummaries.grossBalance =
+      await this.updateGrossBalance(walletSummaries);
+
+    updatedWalletSummaries.rentability =
+      ((updatedWalletSummaries.grossBalance -
+        updatedWalletSummaries.totalInvested) /
+        updatedWalletSummaries.totalInvested) *
+      100;
 
     return this.walletSummariesRepository.update(updatedWalletSummaries, tx);
   }
-
-  //TODO: create a method to update grossBalance according to asset value in real time (when the user logs in)
 
   async getMostValuableAssets(walletId: string) {
     return this.walletSummariesRepository.getMostValuableAssets(walletId);
