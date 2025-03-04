@@ -59,4 +59,19 @@ export class PrismaTransactionRepository implements TransactionRepository {
   async remove(id: string): Promise<void> {
     this.prisma.transaction.delete({ where: { id } });
   }
+
+  async totalInvestedAndGrossBalanceChart(walletId: number) {
+    return await this.prisma.$queryRaw`
+      SELECT DATE_TRUNC('month', "createdAt") AS mes_ano, SUM("valor") AS total
+      FROM "Transaction"
+      WHERE "walletId" = ${walletId}
+      GROUP BY mes_ano
+      ORDER BY mes_ano;
+    `;
+  }
+
+  //TODO: preciso criar uma tabela para armezenar o valor total investido e o valor total de ganho/loss mês a mês.
+  // pois esses dados do mês passado não devem ser calculados com os preços dos ativos atuais.
+  // ex: não faz sentido eu calcular o saldo bruto de janeiro de 2022 a partir do preço atual dos ativos
+  // a rentabilidade seria muito maior, e não iria refletir aquele momento de forma correta.
 }

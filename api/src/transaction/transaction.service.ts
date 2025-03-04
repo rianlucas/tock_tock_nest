@@ -87,7 +87,12 @@ export class TransactionService {
           tx,
         );
 
-      await this.checkIfUserCanSell(createTransactionDto, walletAssetSummaries);
+      if (createTransactionDto.type === 'sell') {
+        await this.checkIfUserCanSell(
+          createTransactionDto,
+          walletAssetSummaries,
+        );
+      }
 
       const transaction = await this.transactionRepository.create(
         createTransactionDto,
