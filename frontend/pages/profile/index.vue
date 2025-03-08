@@ -3,7 +3,8 @@ import PageTitle from '@/components/ui/page-title/PageTitle.vue';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 definePageMeta({
-  layout: "logged-user"
+  layout: "logged-user",
+  noPadding: true
 })
 
 
@@ -29,7 +30,7 @@ onUnmounted(() => {
   <div class="bg-slate-900 p-6 rounded-xl ">
     <PageTitle class="ml-1" title="Perfil"/>
 
-    <div class="flex flex-col md:grid sm:grid-cols-[20%_80%] md:grid-cols-[15%_85%] grid-cols-[10%_90%] bg-background rounded-xl p-4 md:pl-0 xl:pl-4 mt-8">
+    <div class="flex flex-col md:grid sm:grid-cols-[20%_80%] md:grid-cols-[15%_85%] grid-cols-[10%_90%] bg-background rounded-xl p-4 md:pl-0 xl:pl-4 pt-8 mt-8">
       <div class="flex md:flex-col pb-4 border-b md:pb-0 md:border-r md:border-b-0 max-w-[150px] min-w-[105px] box-border">
         <ProfileNavBarLinks 
           path="/profile"

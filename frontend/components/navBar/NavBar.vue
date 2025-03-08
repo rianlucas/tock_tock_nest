@@ -57,6 +57,7 @@ import {
   DoorOpen
 } from 'lucide-vue-next'
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import Breadcrumb from '@/components/navBar/Breadcrumb.vue'
 
 // This is sample data.
@@ -135,6 +136,8 @@ const data = {
     },
   ],
 }
+
+const route = useRoute()
 </script>
 
 <template>
@@ -285,7 +288,10 @@ const data = {
           <Breadcrumb/>
         </div>
       </header>
-      <div class="p-4 w-full min-w-0">
+      <div :class="[
+  'w-full min-w-0', 
+  route.meta.noPadding ? '' : 'p-4'
+]">
         <NuxtPage/>
       </div>
     </SidebarInset>
