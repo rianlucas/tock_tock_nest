@@ -1,0 +1,13 @@
+version: "2"
+sql:
+  - engine: "postgresql" # ou "mysql", "sqlite"
+    queries: "./internal/infra/db/query/" # diretório onde ficarão suas consultas SQL
+    schema: "./internal/infra/db/migration/" # diretório com seus esquemas/migrações
+    gen:
+      go:
+        package: "db" # nome do pacote gerado
+        out: "./internal/infra/db/sqlc" # diretório de saída para o código gerado
+        emit_json_tags: true # gerar tags json nos structs
+        emit_prepared_queries: false
+        emit_interface: true # gerar interfaces
+        emit_exact_table_names: false
